@@ -552,7 +552,7 @@ if (mySprite.tileKindAt(TileDirection.Bottom, assets.tile`myTile`)) {
 gameplay = true
 forever(function () {
     if (gameplay) {
-        pause(10)
-        statusbar.value += -2
+        pause(5)
+        statusbar.value += -1
     }
 })
