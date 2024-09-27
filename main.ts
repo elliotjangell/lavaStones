@@ -48,6 +48,7 @@ function updateStats () {
     textSprite3.top = textSprite2.bottom
 }
 statusbars.onZero(StatusBarKind.Health, function (status) {
+    statusbar.value = statusbar.max
     move()
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -298,19 +299,18 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function move () {
-    statusbar.value = statusbar.max
     for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
         if (Math.percentChance(30)) {
             tiles.setTileAt(value, assets.tile`myTile0`)
         }
     }
     for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
-        if (Math.percentChance(10)) {
+        if (Math.percentChance(statusbar.value + 5)) {
             tiles.setTileAt(value, assets.tile`myTile2`)
         }
     }
     if (tiles.tileAtLocationEquals(mySprite.tilemapLocation(), assets.tile`myTile`)) {
-        if (Math.percentChance(15)) {
+        if (Math.percentChance(statusbar.value - 25)) {
             tiles.setTileAt(mySprite.tilemapLocation(), assets.tile`myTile2`)
         }
     }
@@ -331,6 +331,7 @@ function move () {
     for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
         tiles.setTileAt(value, assets.tile`myTile3`)
     }
+    statusbar.value = statusbar.max
     doPlayerCheck()
 }
 let gameplay = false
@@ -372,8 +373,13 @@ if (game.ask("Do you want the tutorial?", "A = Yes   B = No")) {
     game.showLongText("Use arrow keys/wasd to move around.", DialogLayout.Bottom)
     game.showLongText("Be quick! If you wait, your stone may sink.", DialogLayout.Bottom)
     game.showLongText("Each move, stones will randomly sink.", DialogLayout.Bottom)
+    game.showLongText("This is affected by your jump speed.", DialogLayout.Bottom)
+    game.showLongText("Don't go too fast though! You could fall.", DialogLayout.Bottom)
     game.showLongText("After a stone sinks, it will respawn in 2 moves.", DialogLayout.Bottom)
     game.showLongText("Once it respawns, it will be safe for at least 1 move.", DialogLayout.Bottom)
+    game.showLongText("If you wait, the bar will run down.", DialogLayout.Bottom)
+    game.showLongText("The lower it is, the more careful your jumps are.", DialogLayout.Bottom)
+    game.showLongText("That decreases the chance of a stone sinking!", DialogLayout.Bottom)
     game.showLongText("This is a long tutorial, so have fun playing!", DialogLayout.Bottom)
 }
 music.play(music.stringPlayable("E - - C G C - - ", 400), music.PlaybackMode.InBackground)
@@ -547,6 +553,6 @@ gameplay = true
 forever(function () {
     if (gameplay) {
         pause(10)
-        statusbar.value += -1
+        statusbar.value += -2
     }
 })
