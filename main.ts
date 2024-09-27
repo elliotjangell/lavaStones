@@ -305,12 +305,12 @@ function move () {
         }
     }
     for (let value of tiles.getTilesByType(assets.tile`myTile`)) {
-        if (Math.percentChance(statusbar.value + 5)) {
+        if (Math.percentChance(Math.constrain(statusbar.value + 5, 0, 25))) {
             tiles.setTileAt(value, assets.tile`myTile2`)
         }
     }
     if (tiles.tileAtLocationEquals(mySprite.tilemapLocation(), assets.tile`myTile`)) {
-        if (Math.percentChance(statusbar.value - 25)) {
+        if (Math.percentChance(Math.constrain(statusbar.value - 40, 0, 50))) {
             tiles.setTileAt(mySprite.tilemapLocation(), assets.tile`myTile2`)
         }
     }
